@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+pem
+database/*.sql
+Thumbs.db
+*.log
+uploads/sendfile/*
+uploads/story/*
+uploads/recorder/*

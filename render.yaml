@@ -1,0 +1,38 @@
+# ملف نشر تلقائي على Render (اختياري)
+# Render يقرأه لو ربطت المستودع عن طريق Blueprint.
+# لو أنشأت الخدمة يدوياً، استخدم نفس القيم الموجودة في DEPLOY_FREE_HOSTING.md
+services:
+  - type: web
+    name: gochat
+    env: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: DB_BACKUP
+        value: "0"
+      - key: DB_SSL
+        value: "1"
+      - key: APP_DOMAINS
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: ADMIN_USER
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

@@ -1,0 +1,22 @@
+# مكتبات ومتغيرات سرية - لا ترفع
+node_modules/
+.env
+pem/
+
+# ملفات مؤقتة / نظام
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.log
+npm-debug.log*
+
+# نسخ قاعدة البيانات
+database/*.sql
+
+# ملفات المستخدمين المؤقتة (تُنشأ تلقائياً عند التشغيل)
+uploads/sendfile/*
+uploads/story/*
+uploads/recorder/*
+!uploads/sendfile/.gitkeep
+!uploads/story/.gitkeep
+!uploads/recorder/.gitkeep

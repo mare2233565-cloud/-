@@ -1,0 +1,318 @@
+/* تحميل ملف .env المحلي إن وجد (اختياري) */
+try {
+  require("./env").load();
+} catch (e) {}
+
+/* ============================================================
+   إعدادات البيئة (متوافقة مع الاستضافة المجانية و GitHub)
+   كل القيم لها نفس الافتراضيات القديمة، لذلك المشروع يشتغل
+   محلياً بدون أي متغيرات. على الاستضافة تُضبط من Environment.
+   ============================================================ */
+function envStr(name, def) {
+  var v = process.env[name];
+  return typeof v === "string" && v.length ? v : def;
+}
+function envInt(name, def) {
+  var v = parseInt(process.env[name], 10);
+  return isNaN(v) ? def : v;
+}
+function envBool(name, def) {
+  var v = process.env[name];
+  if (v === undefined || v === "") return def;
+  return ["1", "true", "yes", "on"].indexOf(String(v).toLowerCase()) !== -1;
+}
+function envList(name, def) {
+  var v = process.env[name];
+  if (!v) return def.slice();
+  return String(v)
+    .split(",")
+    .map(function (s) { return s.trim(); })
+    .filter(Boolean);
+}
+
+/* الدومينات المسموحة: من APP_DOMAINS أو تلقائياً من منصة الاستضافة */
+var _domains = envList("APP_DOMAINS", ["domin.com"]);
+(function () {
+  var extra = [
+    process.env.APP_HOST,
+    process.env.RENDER_EXTERNAL_HOSTNAME,
+    process.env.RAILWAY_PUBLIC_DOMAIN,
+    process.env.KOYEB_PUBLIC_DOMAIN,
+    process.env.FLY_APP_NAME ? process.env.FLY_APP_NAME + ".fly.dev" : "",
+  ];
+  for (var i = 0; i < extra.length; i++) {
+    if (extra[i] && _domains.indexOf(extra[i]) === -1) _domains.push(extra[i]);
+  }
+})();
+
+var Config = {
+  Port: envInt("PORT", 5555), // الاستضافة تحدد البورت تلقائياً
+  YoutubeKey: envStr("YOUTUBE_KEY", ""), // اختياري: مفتاح YouTube Data API v3 لبحث يوتيوب (الأضمن). اتركه فارغاً لاستخدام القراءة المباشرة
+  Finished: false,
+  maxRooms: 500,
+  maxPower: 1000,
+  MaxBc: 30,
+  maxbot: 30, // عدد البوتات
+  MaxState: 150,
+  MaxLogs: 350,
+  MaxFilter: 100,
+  TimeOffline: 400, // 20 ساعة
+  ListDomin: _domains,
+  AllowAllDomains: _domains.indexOf("*") !== -1,
+  UseSSL: envBool("SSL", false), // على الاستضافة HTTPS يكون من عندهم، اتركها false
+  TrustProxy: envBool("TRUST_PROXY", true),
+  DatabaseBackup: envBool("DB_BACKUP", false), // النسخ التلقائي (يحتاج mysqldump)
+  MaxComment: 50, // عدد العليقات
+  MaxEktisar: 3, // عدد الاختصارا5
+  timeLike: 1, // دقيقة
+  AccountUserName: envStr("ADMIN_USER", "aymin"),
+  AccountPassword: envStr("ADMIN_PASSWORD", "1111"),
+  HostDB: envStr("DB_HOST", "localhost"),
+  DBPort: envInt("DB_PORT", 3306),
+  DBSSL: envBool("DB_SSL", false),
+  UserDB: envStr("DB_USER", "root"),
+  PassDB: envStr("DB_PASSWORD", "pasowrd-database"),
+  DBDB: envStr("DB_NAME", "name-database"),
+  tokenScreen: envStr("TOKEN_SCREEN", "d"),
+  Backup: 60000 * 60 * 15, //15 ساعات
+  MaxUpload: 200 * 1000 * 1000, // 200 مجيا
+  PowerNon: {
+    rank: 0,
+    name: "",
+    ico: "",
+    kick: 0,
+    delbc: 0,
+    alert: 0,
+    mynick: 0,
+    unick: 0,
+    ban: 0,
+    publicmsg: 0,
+    forcepm: 0,
+    bootedit: 0,
+    roomowner: 0,
+    createroom: 0,
+    rooms: 0,
+    edituser: 0,
+    setpower: 0,
+    upgrades: 0,
+    history: 0,
+    cp: 0,
+    stealth: 0,
+    owner: 0,
+    meiut: 0,
+    loveu: 0,
+    ulike: 0,
+    flter: 0,
+    subs: 0,
+    shrt: 0,
+    msgs: 0,
+    broadcast: 0,
+    camera: 0,
+    grupes: 0,
+    delcover: 0,
+    report: 0,
+    delmsg: 0,
+    delpic: 0,
+  },
+  CountryVPN: [
+    "AS",
+    "NL",
+    "AF",
+    "AL",
+    "AD",
+    "AO",
+    "AQ",
+    "AG",
+    "AR",
+    "AM",
+    "AW",
+    "AU",
+    "AI",
+    "AZ",
+    "AT",
+    "BB",
+    "BJ",
+    "BW",
+    "BS",
+    "BD",
+    "BY",
+    "BE",
+    "US",
+    "BZ",
+    "BM",
+    "BT",
+    "BG",
+    "BF",
+    "BI",
+    "KH",
+    "A1",
+    "BO",
+    "BA",
+    "BV",
+    "BR",
+    "CA",
+    "CM",
+    "ZA",
+    "HR",
+    "KR",
+    "LV",
+    "NO",
+    "NZ",
+    "SI",
+    "TD",
+    "CN",
+    "CL",
+    "CO",
+    "KM",
+    "CR",
+    "CG",
+    "CY",
+    "CZ",
+    "DK",
+    "DJ",
+    "DM",
+    "DO",
+    "SV",
+    "EE",
+    "ER",
+    "FJ",
+    "FI",
+    "FR",
+    "ET",
+    "FJ",
+    "GA",
+    "GM",
+    "DE",
+    "KP",
+    "GR",
+    "GG",
+    "GN",
+    "HT",
+    "HN",
+    "HU",
+    "IS",
+    "IN",
+    "ID",
+    "IR",
+    "IE",
+    "IT",
+    "JM",
+    "JE",
+    "KE",
+    "KZ",
+    "LA",
+    "LA",
+    "MY",
+    "ES",
+    "LU",
+    "MD",
+    "MG",
+    "MV",
+    "ML",
+    "MT",
+    "MR",
+    "MX",
+    "MC",
+    "MZ",
+    "NG",
+    "PK",
+    "PE",
+    "PA",
+    "PH",
+    "PL",
+    "PT",
+    "RO",
+    "RU",
+    "SN",
+    "SG",
+    "SO",
+    "SD",
+    "ES",
+    "JP",
+    "RS",
+    "CH",
+    "TW",
+    "TZ",
+    "TH",
+    "TG",
+    "UG",
+    "UA",
+    "UAE",
+    "GB",
+    "UY",
+    "VE",
+    "VN",
+    "ZM",
+    "ZW",
+  ],
+  BrowserList: [
+    "chrome",
+    "firefox",
+    "safari",
+    "opera",
+    "gsa",
+    "internet explorer",
+    "edge",
+    "Samsung browser",
+    "Samsung internet",
+    "Chrome WebView",
+    "android webview",
+  ],
+  PlatformList: [
+    "win",
+    "windows",
+    "linux",
+    "android",
+    "ios",
+    "windows phone",
+    "mac",
+    "chromium os",
+    "mac os",
+  ],
+  TypeFileImage: {
+    "image/gif": "gif",
+    "image/x-icon": "ico",
+    "image/jpeg": "jpeg",
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/svg+xml": "svg",
+    "image/tiff": "tif",
+    "image/tiff": "tiff",
+    "image/webp": "webp",
+  },
+  TypeFile: {
+    "video/mov": "mov",
+    "video/mov": "MOV",
+    "video/quicktime": "mov",
+    "video/quicktime": "MOV",
+    "audio/aac": "aac",
+    "audio/m4a": "m4a",
+    "audio/x-m4a": "m4a",
+    "video/x-msvideo": "avi",
+    "image/gif": "gif",
+    "image/x-icon": "ico",
+    "image/jpeg": "jpeg",
+    "image/jpeg": "jpg",
+    "audio/midi": "mid",
+    "audio/midi": "midi",
+    "audio/mpeg": "mp2",
+    "audio/mpeg": "mp3",
+    "video/mp4": "mp4",
+    "video/mpeg": "mpa",
+    "video/mpeg": "mpe",
+    "video/mpeg": "mpeg",
+    "audio/ogg": "oga",
+    "video/ogg": "ogv",
+    "image/png": "png",
+    "image/svg+xml": "svg",
+    "image/tiff": "tif",
+    "image/tiff": "tiff",
+    "audio/x-wav": "wav",
+    "audio/webm": "weba",
+    "video/webm": "webm",
+    "image/webp": "webp",
+    "video/3gpp": "3gp",
+    "video/3gpp2": "3gp2",
+  },
+};
+module.exports = Config;
