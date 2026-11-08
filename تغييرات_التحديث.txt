@@ -1,0 +1,8 @@
+الملفات (مساراتها نسبة لمجلد chat):
+server.js                 - سرعة الرسائل + اشعار الزيارة + اصلاح رفع الايموشن
+router/users_list.js      - عمود visitnotif (بيتضاف تلقائي اول تشغيل)
+public/x2.js              - سرعة الاستقبال + حالة اشعار الزيارة
+public/design-modal.js    - باب ايقاف / تشغيل اشعار زيارة البروفايل
+public/index.ejs          - ارقام النسخ: x2.js?53 و design-modal.js?2
+
+بعد النسخ: pm2 restart server ثم Ctrl+Shift+R

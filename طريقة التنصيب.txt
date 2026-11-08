@@ -1,0 +1,33 @@
+--------------- تجهيز قواعد البينات 
+Database
+1- sudo apt-get update
+2- sudo apt-get install mysql-server
+
+------------ للدخول الي قواعد البينات ,ysql -------------------
+4-mysql
+------------- بتغير باسورد قواعد البينات هنا اللي بعد كدة بتحطة في ملف ال config --------------------------
+5-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'حط هنا باسورد';
+
+-------------------------- وهنا بتعمل قاعدة بينات للشات بتحطلها اسم وبعد مبتعملها بتحطها برضة في ملف ال config --------------------
+5- CREATE DATABASE اسم قاعدة البينات;
+
+---------------- بتعمل خروج من قواعد البينات -------------------------
+
+7-quit
+
+------------------------------- تجهيز السيرفر -----------------------------
+
+Server Nodejs
+1- sudo apt update
+2- sudo apt install nodejs
+3- sudo apt install npm
+4- wget -qO- https://deb.nodesource.com/setup_15.x | sudo -E bash -
+5- sudo apt install -y nodejs
+6- sudo npm install pm2@latest -g
+7- npm install
+8- pm2 start server.js
+
+
+
+
+
